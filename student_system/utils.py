@@ -1,11 +1,31 @@
-import csv
+# Student Information & Grade Processing System
+# Included helper functions and custom exceptions:
+    # 1. FileManager: Custom context manager for file handling
+    # 2. read_students_file: Read file content(student records) using custom context manager
+    # 3. validate_student_id: Validate the student ID format using using assert statements
+    # 4. DuplicateIDError: Custom exception for duplicate student IDs
+    # 5. check_duplicate_id: Check if student ID already exists in file
+    # 6. validate_student_name: Validate the student name using using assert statements
+    # 7. InvalidMarkError: Custom exception for invalid marks
+    # 8. validate_marks: Validate the marks using custom exception: InvalidMarkError
+    # 9. write_students_file: Write student records to file using custom context manager
+    # 10. write_all_students_file: Write all student records to file using custom context manager
+    # 11. calculate_grade: Calculate grade based on the stored marks
+    # 12. calculate_total: Calculate total marks
+    # 13. calculate_average: Calculate average marks
+    # 14. display_student_table_header: Display the table header for student records
+    # 15. display_student_row: Display a single student record in table format
+    # 16. display_student_table_footer: Display the table footer (bottom border)
 
+
+import csv
 
 # Custom context manager
 class FileManager:
     """
     Custom context manager for file handling
     """
+
     def __init__(self, filename, mode):
         self.filename = filename
         self.mode = mode
@@ -43,17 +63,11 @@ def read_students_file(filename):
                     "Maths": int(row[3])
 
                 })
-                
+                            
     except (ValueError, IndexError):
         print("Error: Corrupted data in student records file.")
 
-    """
-    except FileNotFoundError:
-        print("No student records file found. Please add students first.")
-    """
-
     return students
-    
 
 
 # Function to validate student ID
@@ -61,6 +75,7 @@ def validate_student_id(std_id):
     """
     Validate the student ID format using using assert statements
     """
+
     assert (std_id.startswith("S") or std_id.startswith("s")) and std_id[1:].isdigit(), "Invalid student ID format. Expected format: S001, S002, etc."
 
     assert std_id.strip() != "", "Student ID cannot be empty."
@@ -73,6 +88,7 @@ class DuplicateIDError(Exception):
     """
     Custom exception for duplicate student IDs
     """
+
     def __init__(self, std_id):
         self.std_id = std_id
         self.message = f"Duplicate student ID found: {std_id}. Please enter a unique ID.\n"
@@ -84,6 +100,7 @@ def check_duplicate_id(std_id, filename='students.txt'):
     """
     Check if student ID already exists in file
     """
+
     try:
         students = read_students_file(filename)
 
@@ -111,6 +128,7 @@ class InvalidMarkError(Exception):
     """
     Custom exception for invalid marks
     """
+
     def __init__(self, message):
         super().__init__(message) 
         self.message = message
@@ -122,6 +140,7 @@ def validate_marks(mark):
     Validate the marks using custom exception: InvalidMarkError
     (marks must be integers between 0-100)
     """
+
     try:
         assert 0 <= mark <= 100
 
@@ -174,13 +193,13 @@ def write_all_students_file(filename, students):
             writer.writerow([student['Student_ID'], student['Student_Name'], student['Science'], student['Maths']])
 
 
-
 # Function to calculate grade
 def calculate_grade(marks):
     """
     Calculate grade based on the stored marks
     Grades (A, B, C, D, or F)
     """
+
     if marks >= 90:
         return 'A+'
     elif marks >= 75:
@@ -194,11 +213,13 @@ def calculate_grade(marks):
     else:
         return 'F'
 
+
 # Function to calculate total marks
 def calculate_total(marks):
     """
     Calculate total marks
     """
+
     return sum(marks)
 
 
@@ -207,6 +228,7 @@ def calculate_average(marks, index=0, total=0):
     """
     Recursive function to calculate average marks
     """
+
     # Base case: reached end of list
     if index == len(marks):
         if len(marks) == 0:
@@ -222,6 +244,7 @@ def display_student_table_header():
     """
     Display the table header for student records
     """
+
     print("-" * 98)
     print(f"| {'Student ID':<12} | {'Student Name':<20} | {'Science':<10} | {'Maths':<10} | {'Total':<8} | {'Average':<10} | {'Grade':<6} |")
     print("-" * 98)
@@ -232,6 +255,7 @@ def display_student_row(student):
     """
     Display a single student record in table format
     """
+
     # Calculate total, average, and grade
     total = calculate_total([student['Science'], student['Maths']])
     average = calculate_average([student['Science'], student['Maths']])
@@ -240,9 +264,11 @@ def display_student_row(student):
     # Print formatted row
     print(f"| {student['Student_ID']:<12} | {student['Student_Name']:<20} | {student['Science']:<10} | {student['Maths']:<10} | {total:<8} | {average:<10.2f} | {grade:<6} |")
 
+
 # Function to display table footer
 def display_student_table_footer():
     """
     Display the table footer (bottom border)
     """
+
     print("-" * 98)
