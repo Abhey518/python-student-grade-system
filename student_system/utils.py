@@ -6,16 +6,17 @@
     # 4. DuplicateIDError: Custom exception for duplicate student IDs
     # 5. check_duplicate_id: Check if student ID already exists in file
     # 6. validate_student_name: Validate the student name using using assert statements
-    # 7. InvalidMarkError: Custom exception for invalid marks
-    # 8. validate_marks: Validate the marks using custom exception: InvalidMarkError
-    # 9. write_students_file: Write student records to file using custom context manager
-    # 10. write_all_students_file: Write all student records to file using custom context manager
-    # 11. calculate_grade: Calculate grade based on the stored marks
-    # 12. calculate_total: Calculate total marks
-    # 13. calculate_average: Calculate average marks
-    # 14. display_student_table_header: Display the table header for student records
-    # 15. display_student_row: Display a single student record in table format
-    # 16. display_student_table_footer: Display the table footer (bottom border)
+    # 7. find_student_index: Find the index of a student record in the list based on student ID
+    # 8. InvalidMarkError: Custom exception for invalid marks
+    # 9. validate_marks: Validate the marks using custom exception: InvalidMarkError
+    # 10. write_students_file: Write student records to file using custom context manager
+    # 11. write_all_students_file: Write all student records to file using custom context manager
+    # 12. calculate_grade: Calculate grade based on the stored marks
+    # 13. calculate_total: Calculate total marks
+    # 14. calculate_average: Calculate average marks
+    # 15. display_student_table_header: Display the table header for student records
+    # 16. display_student_row: Display a single student record in table format
+    # 17. display_student_table_footer: Display the table footer (bottom border)
 
 
 import csv
@@ -110,7 +111,7 @@ def check_duplicate_id(std_id, filename='students.txt'):
 
     except:
         pass
-
+        
     return False
 
 
@@ -121,6 +122,21 @@ def validate_student_name(std_name):
     """
 
     assert isinstance(std_name, str) and std_name.strip() != "", "Student name cannot be empty"
+
+
+def find_student_index(students, std_id):
+    """
+    Find the index of a student record in the list based on student ID
+    """
+
+    # Search for the student and get the index if found
+    # used enumerate() to get index and value
+
+    for i, student in enumerate(students):
+        if student['Student_ID'] == std_id:
+            return i
+
+    return -1
 
 
 # Custom exception for invalid marks
@@ -197,7 +213,7 @@ def write_all_students_file(filename, students):
 def calculate_grade(marks):
     """
     Calculate grade based on the stored marks
-    Grades (A, B, C, D, or F)
+    Grades (A, B, C, S, or F)
     """
 
     if marks >= 90:
@@ -245,9 +261,9 @@ def display_student_table_header():
     Display the table header for student records
     """
 
-    print("-" * 98)
-    print(f"| {'Student ID':<12} | {'Student Name':<20} | {'Science':<10} | {'Maths':<10} | {'Total':<8} | {'Average':<10} | {'Grade':<6} |")
-    print("-" * 98)
+    print("-" * 104)
+    print(f"| {'Student ID':<12} | {'Student Name':<26} | {'Science':<10} | {'Maths':<10} | {'Total':<8} | {'Average':<10} | {'Grade':<6} |")
+    print("-" * 104)
 
 
 # Function to display a single student record row
@@ -262,7 +278,7 @@ def display_student_row(student):
     grade = calculate_grade(average)
     
     # Print formatted row
-    print(f"| {student['Student_ID']:<12} | {student['Student_Name']:<20} | {student['Science']:<10} | {student['Maths']:<10} | {total:<8} | {average:<10.2f} | {grade:<6} |")
+    print(f"| {student['Student_ID']:<12} | {student['Student_Name']:<26} | {student['Science']:<10} | {student['Maths']:<10} | {total:<8} | {average:<10.2f} | {grade:<6} |")
 
 
 # Function to display table footer
@@ -271,4 +287,4 @@ def display_student_table_footer():
     Display the table footer (bottom border)
     """
 
-    print("-" * 98)
+    print("-" * 104)

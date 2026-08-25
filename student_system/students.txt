@@ -1,10 +1,10 @@
 Student_ID,Student_Name,Science,Maths
-S001,Arunoda,85,92
-S002,Divya,88,94
+S001,Arunoda Abeywardhana,85,92
+S002,Divya Mohan,88,94
 S003,Pasindu,80,88
 S004,Lakjith,88,88
 S005,Ishara,85,94
-S006,Yasas,80,85
+S006,Yasas Gamitha,80,85
 S007,Tharindu,87,84
 S008,Shehan,84,88
 S009,Gihan,82,94
@@ -14,3 +14,5 @@ S012,Suresh,78,75
 S013,Shalitha,60,72
 S014,Renuja,60,64
 S015,Naveen,60,56
+S016,Ravindu Kavishka,85,87
+S017,Minindu Rajendra,74,70

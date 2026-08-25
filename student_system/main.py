@@ -2,7 +2,8 @@
 
 # Assumptions:
     # 1. Student ID format: S001, S002, etc. (S followed by 3 digits)
-    # 2. Only marks can be updated; to change ID/Name, delete and re add the record
+    # 2. Student Name format: Any valid string
+    # 3. Marks format: Integers between 0 and 100
 
 from utils import *
 
@@ -320,14 +321,8 @@ def update_student():
             if not students:
                 print("No student records found.")
                 return
-            
-            # Search for the student and get the index if found
-            # used enumerate() to get index and value
-            f_index = -1
-            for i, student in enumerate(students): 
-                if student['Student_ID'] == std_id:
-                    f_index = i
-                    break
+
+            f_index = find_student_index(students, std_id)
             
             # Check if student was found
             if f_index == -1:
@@ -399,6 +394,93 @@ def update_student():
             print("Please try again!\n")
             
 
+# Function for Editing Student Name
+def edit_student_name():
+    """
+    Edit a student's name using Student ID
+    """
+
+    print("\n---------- Edit Student Name ----------\n")
+
+    while True:
+        try:
+            # Get student ID to edit
+            std_id = input("Enter Student ID to edit: ").strip()
+
+            # Validate student ID
+            validate_student_id(std_id)
+
+            std_id = std_id.upper()
+
+            # Read all students
+            students = read_students_file(STUDENT_FILE)
+
+            # Check if file is empty
+            if not students:
+                print("No student records found.")
+                return
+
+            f_index = find_student_index(students, std_id)
+
+            # Check if student was found
+            if f_index == -1:
+                print(f"Student record not found for ID: {std_id}")
+                break
+
+            # Display current record
+            current_student = students[f_index]
+
+            print("\n---------- Current Student Record ----------\n")
+            display_student_table_header()
+            display_student_row(current_student)
+            display_student_table_footer()
+            print()
+
+            # Ask user for confirmation
+            confirm = input("Are you sure you want to edit the student name? (y/n): ").strip().lower()
+
+            if confirm == 'n':
+                print("Edit cancelled successfully.")
+                print("Returning to main menu...")
+                return
+
+            elif confirm != 'y':
+                print("Invalid input. Returning to main menu...")
+                return
+                        
+            while True:
+                try:
+                    new_name = input("Enter correct Student Name: ").strip()
+
+                    validate_student_name(new_name)
+                    break
+
+                except AssertionError as e:
+                    print(f"Error: {e}")
+                    print("Please try again!\n")
+
+            students[f_index]['Student_Name'] = new_name
+
+            write_all_students_file(STUDENT_FILE, students)
+
+            print("\nStudent name updated successfully!")
+
+            print("\n---------- Updated Student Record ----------\n")
+            display_student_table_header()
+            display_student_row(students[f_index])
+            display_student_table_footer()
+            break
+
+        except FileNotFoundError:
+            print("No student records file found. Please add students first.")
+            print("Returning to main menu...")
+            break
+
+        except AssertionError as e:
+            print(f"Error: {e}")
+            print("Please try again!\n")
+
+
 # Function for Delete Student Record
 def delete_student():
     """
@@ -425,13 +507,7 @@ def delete_student():
                 print("No student records found.")
                 return
             
-            # Search for the student and get the index if found
-            # used enumerate() to get index and value
-            f_index = -1
-            for i, student in enumerate(students): 
-                if student['Student_ID'] == std_id:
-                    f_index = i
-                    break
+            f_index = find_student_index(students, std_id)
             
             # Check if student was found
             if f_index == -1:
@@ -493,12 +569,13 @@ def main():
         print("3. Search Student by ID")
         print("4. Class Statistics")
         print("5. Update Student Marks")
-        print("6. Delete Student Record")
-        print("7. Exit")
+        print("6. Edit Student Name")
+        print("7. Delete Student Record")
+        print("8. Exit")
         
         # Main loop
         try:
-            choice = input("\nEnter your choice (1-7): ").strip()
+            choice = input("\nEnter your choice (1-8): ").strip()
                 
             if choice == '1':
                 add_student()
@@ -511,13 +588,15 @@ def main():
             elif choice == '5':
                 update_student()
             elif choice == '6':
-                delete_student()
+                edit_student_name()
             elif choice == '7':
+                delete_student()
+            elif choice == '8':
                 print("\nExiting System...")
                 print("System closed successfully!")
                 break
             else:
-                print("Invalid choice! Please enter a number between 1 and 7.")
+                print("Invalid choice! Please enter a number between 1 and 8.")
 
         except Exception as e:
             print(f"Unexpected error: {e}")
