@@ -11,9 +11,10 @@ A comprehensive Python-based student management system for tracking student reco
 - ✅ **Search Student** - Find student records by ID
 - ✅ **Class Statistics** - Generate comprehensive statistics with:
   - Recursive average calculation
-  - Highest/lowest marks using lambda expressions
+  - Highest/lowest marks using list comprehensions
   - Tied marks handling (displays all students with same marks)
 - ✅ **Update Student Marks** - Modify existing student marks
+- ✅ **Edit Student Name** - Modify an existing student's name
 - ✅ **Delete Student Records** - Remove student records with confirmation
 
 ### Technical Features
@@ -22,7 +23,7 @@ A comprehensive Python-based student management system for tracking student reco
 - **Custom Exceptions** - `DuplicateIDError` and `InvalidMarkError` for robust error handling
 - **Input Validation** - Comprehensive validation for student IDs, names, and marks
 - **Recursive Functions** - Average calculation using recursion
-- **Lambda Expressions** - Finding highest/lowest marks
+- **List Comprehensions** - Finding students with highest/lowest marks
 - **CSV File Storage** - Persistent data storage using CSV format
 
 ## Project Structure
@@ -69,8 +70,9 @@ student_system/
 3. Search Student by ID
 4. Class Statistics
 5. Update Student Marks
-6. Delete Student Record
-7. Exit
+6. Edit Student Name
+7. Delete Student Record
+8. Exit
 ```
 
 ### Student ID Format
@@ -107,7 +109,7 @@ Enter Maths Marks (0-100): 90
 ### Class Statistics Output
 
 ```
-Total Students: 3
+Total Students: 4
 
 SCIENCE STATISTICS:
   Average Marks: 85.00
@@ -146,7 +148,7 @@ The system validates:
 ## Assumptions
 
 1. Student ID format: S001, S002, etc. (S followed by 3 digits)
-2. Only marks can be updated; to change ID/Name, delete and re-add the record
+2. Student names and marks can be updated; student IDs cannot be changed
 
 ## Technical Implementation
 
@@ -167,11 +169,14 @@ class FileManager:
 def calculate_average(marks, index=0, total=0):
     """Recursive function to calculate average marks"""
     if index == len(marks):
+        if len(marks) == 0:
+            return 0
         return total / len(marks)
+
     return calculate_average(marks, index + 1, total + marks[index])
 ```
 
-### Lambda Expressions for Statistics
+### List Comprehensions for Statistics
 
 ```python
 highest_science_mark = max(science_marks)
@@ -194,7 +199,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Author
 
-**Abhey**
+**Arunoda Abeywardhana**
 
 - GitHub: [@Abhey518](https://github.com/Abhey518)
 
@@ -208,4 +213,4 @@ This is an **individual academic project** developed as part of the coursework r
 
 ---
 
-**Note**: This system is designed for educational purposes and demonstrates Python programming concepts including file I/O, custom exceptions, context managers, recursion, and lambda expressions.
+**Note**: This system is designed for educational purposes and demonstrates Python programming concepts including file I/O, custom exceptions, context managers, recursion, and list comprehensions.
